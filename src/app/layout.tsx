@@ -14,8 +14,17 @@ function ListItemLoading() {
     <div className=" h-[64px] grid items-center">
       <div role="status" className="w-full animate-pulse">
         <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-full "></div>
-
         <span className="sr-only">Loading...</span>
+      </div>
+      <div className="flex items-center justify-between">
+        <div role="status" className="w-12 animate-pulse">
+          <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-full "></div>
+          <span className="sr-only">Loading...</span>
+        </div>
+        <div role="status" className="w-16 animate-pulse">
+          <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-full "></div>
+          <span className="sr-only">Loading...</span>
+        </div>
       </div>
     </div>
   );
@@ -29,7 +38,13 @@ async function ListItem({ id }: { id: number }) {
     (res) => res.json() as Promise<{ title: string; url: string; by: string }>
   );
   return (
-    <li className="grid item-center truncate h-16">{post.title || post.by}</li>
+    <div className="flex flex-col gap-2 h-[64px] ">
+      <p className="truncate"> {post.title || post.by}</p>
+      <div className="flex flex-row items-center opacity-50 justify-between">
+        <p>{post.by}</p>
+        <p>Visit website {`>>`}</p>
+      </div>
+    </div>
   );
 }
 
@@ -45,7 +60,7 @@ export default async function RootLayout({ children }: { children: any }) {
         </header>
         <main className="grid grid-cols-[320px,1fr] gap-4">
           <aside>
-            <ul className=" px-4 ">
+            <ul className="flex  p-4 flex-col gap-4  ">
               {posts.map((id) => (
                 <Link key={id} href={`/${id}`}>
                   <Suspense fallback={<ListItemLoading />}>
